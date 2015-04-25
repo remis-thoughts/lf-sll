@@ -4,6 +4,7 @@ use std::ptr::null_mut;
 use std::sync::atomic::{AtomicPtr, Ordering};
 use std::boxed;
 use std::default::Default;
+use std::iter::IntoIterator;
 
 struct ListElement<T> {
 	next: AtomicPtr<ListElement<T>>,
@@ -88,6 +89,15 @@ impl<T> Drop for List<T> {
 			tail = recl.next.load(Ordering::Acquire);
 		}
 	}
+}
+
+impl<'a, T> IntoIterator for &'a List<T> {
+    type Item = &'a T;
+    type IntoIter = ListIter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+    	self.iter()
+    }
 }
 
 impl<'a, T> Iterator for ListIter<'a, T> {

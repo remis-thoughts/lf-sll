@@ -60,3 +60,17 @@ fn test_concurrent() {
 
 	assert_eq!(0, l.iter().count());
 }
+
+#[test]
+fn test_into_iter() {
+	let l = lfsll::List::<usize>::new();
+	l.prepend(4);
+	l.prepend(2);
+	l.prepend(10);
+
+	let mut i: usize = 0;
+	for it in &l {
+		i += *it;
+	}
+	assert_eq!(16, i);
+}
