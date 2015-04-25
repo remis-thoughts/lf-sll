@@ -1,4 +1,3 @@
-
 #![feature(alloc)]
 
 use std::ptr::null_mut;
@@ -47,6 +46,34 @@ impl<T> List<T> {
 					Ordering::Release);
 				if old_val == head_snapshot {
 					return
+				}
+			}
+		}
+	}
+}
+
+impl<T: PartialEq> List<T> {
+	pub fn remove(&self, it: T) -> bool {
+		let mut ptr = &self.head;
+		loop {
+			let before = ptr.load(Ordering::Acquire);
+			if before == null_mut() {
+				return false
+			}
+
+			unsafe {
+				if (*before).it == it {
+					let after = (*before).next.load(Ordering::Acquire);
+					let old_val = ptr.compare_and_swap(
+						before,
+						after,
+						Ordering::Release);
+					if old_val == before {
+						Box::from_raw(before); // release memory
+						return true;
+					}
+				} else {
+					ptr = &(*before).next;
 				}
 			}
 		}
