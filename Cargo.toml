@@ -1,0 +1,9 @@
+[package]
+name = "lf-sll"
+version = "0.0.1"
+description = "A lock-free singly-linked list"
+authors = ["Remis <remis.thoughts@gmail.com>"]
+license = "Apache-2.0"
+
+[lib]
+name = "lfsll"
