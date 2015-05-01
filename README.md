@@ -11,7 +11,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-lf-sll = "0.0.2"
+lf-sll = "0.0.3"
 ```
 
 and this to your crate root:
