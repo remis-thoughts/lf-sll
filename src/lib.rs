@@ -19,8 +19,11 @@ pub struct List<T> {
 	head: AtomicPtr<ListElement<T>>,
 }
 
-unsafe impl<T> Sync for List<T> {}
-unsafe impl<T> Sync for ListElement<T> {}
+unsafe impl<T> Sync for List<T> where T: Send {}
+unsafe impl<T> Send for List<T> where T: Send {}
+
+unsafe impl<T> Sync for ListElement<T> where T: Send {}
+unsafe impl<T> Send for ListElement<T> where T: Send {}
 
 impl<T> List<T> {
 	pub fn new() -> List<T> {
